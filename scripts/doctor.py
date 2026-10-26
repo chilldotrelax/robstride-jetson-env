@@ -11,8 +11,8 @@ from serial.tools import list_ports
 def main():
     print(f"Python: {platform.python_version()} ({sys.executable})")
     print(f"Platform: {platform.system()} {platform.machine()}")
-    if sys.version_info[:2] != (3, 10):
-        raise SystemExit("This environment requires Python 3.10.")
+    if sys.version_info[:2] not in ((3, 10), (3, 12)):
+        raise SystemExit("Use Python 3.10 on Ubuntu 22.04 or Python 3.12 on Ubuntu 24.04.")
     for module, distribution in [
         ("can", "python-can"),
         ("serial", "pyserial"),

@@ -10,7 +10,10 @@ permissions:
 jobs:
   ubuntu-arm64:
     runs-on: ubuntu-24.04-arm
+    strategy:
+      matrix:
+        ubuntu: ["22.04", "24.04"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Test installer and idempotent rerun on Ubuntu 22.04 ARM64
-        run: docker build --platform linux/arm64 -f tests/ubuntu.Dockerfile -t robstride-env-check .
+      - name: Test installer and idempotent rerun on Ubuntu ARM64
+        run: docker build --platform linux/arm64 --build-arg UBUNTU_VERSION=${{ matrix.ubuntu }} -f tests/ubuntu.Dockerfile -t robstride-env-check .

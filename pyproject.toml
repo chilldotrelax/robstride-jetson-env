@@ -2,7 +2,7 @@
 name = "robstride-arm-environment"
 version = "0.1.0"
 description = "Python development environment for a RobStride arm targeting Jetson Orin Nano"
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "pyserial>=3.5,<4",
     "robstride-control",

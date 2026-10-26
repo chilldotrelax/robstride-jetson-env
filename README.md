@@ -1,7 +1,8 @@
 # RobStride Jetson development environment
 
-Single-command dependency setup for **Jetson Orin Nano, JetPack 6 / Ubuntu 22.04
-ARM64, Python 3.10**. Internet access and sudo access are required for installation.
+Single-command dependency setup for **Jetson Orin Nano on Ubuntu 22.04 or 24.04
+ARM64**. The installer selects the OS-native Python: **3.10 on Ubuntu 22.04**
+or **3.12 on Ubuntu 24.04**. Internet access and sudo access are required for installation.
 JetPack/Ubuntu must already be installed; this repository does not flash the board.
 
 ## Install
@@ -54,15 +55,25 @@ host or CI; it skips apt, driver loading, and group changes.
 
 - Python CAN, pySerial, NumPy, tqdm, Matplotlib, and the vendored RobStride SDK.
 - pytest, Ruff, and pip for development (default).
-- Ubuntu: Python 3.10/venv/pip, `can-utils`, `iproute2`, `usbutils`, `kmod`, Git,
+- Ubuntu: the appropriate Python/venv/pip, `can-utils`, `iproute2`, `usbutils`, `kmod`, Git,
   and CA certificates.
 - uv 0.13.5 bootstraps the locked environment; `uv.lock` pins package versions
   and hashes. `requirements-jetson.txt` is a runtime-only export excluding the
   separately vendored SDK.
 
 No ROS, CUDA Python packages, or unrelated language toolchains are needed for
-this baseline. Python 3.10 is deliberate: other Ubuntu/Python releases are
-rejected rather than silently changing the dependency set.
+this baseline. Unsupported Ubuntu releases and 32-bit userspaces are rejected.
+Architecture is checked using `dpkg --print-architecture` plus userspace width;
+a kernel/shell label of `arm` alone is not treated as proof of a 32-bit system.
+
+For an existing checkout, fetch the installer update before retrying:
+
+```bash
+git pull --ff-only
+bash install.sh
+```
+
+If you originally downloaded a ZIP, download and extract the updated ZIP instead.
 
 ## Adapter and motor status
 
@@ -113,4 +124,6 @@ python -m pytest -q tests
 
 Tests use simulated serial data and never open an adapter. Source provenance and
 local modifications are recorded in [THIRD_PARTY.md](THIRD_PARTY.md).
-The Ubuntu baseline is documented by [NVIDIA JetPack 6.2](https://developer.nvidia.com/embedded/jetpack-sdk-62).
+Ubuntu 22.04 is documented by [NVIDIA JetPack 6.2](https://developer.nvidia.com/embedded/jetpack-sdk-62);
+Ubuntu 24.04 and Jetson Linux 39.2.1 are documented by
+[NVIDIA JetPack 7.2.1](https://developer.nvidia.com/embedded/jetpack/downloads).
